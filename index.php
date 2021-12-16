@@ -1,4 +1,40 @@
+<?php
+//  require_once('configuracoes/config.php');
+//     require_once('bd/conexao.php');
+//     // require_once(SRC.'bd/listarCategorias.php');
+//     conexaoMysql();
 
+//     require_once('controles/exibirDadosCategorias.php');
+
+
+
+
+    session_start();
+
+    $nome = (string) null;
+    $id = (int) 0;
+    $modo = (string) "Enviar";
+    $celular = (string) null;
+    $email = (string) null;
+
+    require_once('Admin/configuracoes/config.php');
+
+    require_once('Admin/bd/conexao.php');
+    conexaoMysql();
+
+    require_once(SRC. 'controles/exibirDadosContatos.php');
+
+    if(isset( $_SESSION['contato'])){
+        $id = $_SESSION['contato']['idcontato'];
+        $nome = $_SESSION['contato']['nome'];
+        $celular = $_SESSION['contato']['celular'];
+        $email = $_SESSION['contato']['email'];
+        $modo = "enviar";
+
+        unset($_SESSION['contato']);
+    }
+    // var_dump($_SESSION['contato']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -271,12 +307,14 @@
                     <label> Celular: </label>
                 </div>
             </div>
+            <form action="Admin/controles/recebeContatos.php?modo=<?=$modo?>&id=<?=$id?>" name="frmCadastro" method="post" >
             <div id="contatosInput"> 
-                <input type="text" name="btnNome" value=""> 
-                <input type="email" name="btnEmail" value=""> 
-                <input type="telefone" name="btnCelular" value=""> 
+                <input type="text" name="nome" value="<?=$nome?>" maxlength="100"> 
+                <input type="text" name="email" value="<?=$email?>" maxlength="100"> 
+                <input type="text" name="celular" value="<?=$celular?>"maxlength="20"> 
             </div>
-           <input id="btnSalvar" type="submit" name="btnSalvar" value="Enviar"> 
+           <input id="btnSalvar" type="submit" name="btnSalvar" value="<?=$modo?>"> 
+			</form>
         </div>
 	</div>
     
